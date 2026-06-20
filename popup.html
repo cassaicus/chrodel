@@ -1,23 +1,40 @@
+<!-- 
+  @file popup.html
+  @description 拡張機能のアイコンをクリックしたときに表示されるUI（ポップアップ画面）です。
+  ユーザーが自動削除の各設定（有効/無効、削除対象の選択、自動削除のタイミング）を視覚的に
+  設定するための操作画面を構築しています。
+  モダンでプレミアムなダークテーマスタイルを適用するために popup.css を読み込み、
+  UIの操作やストレージ保存との同期を制御するために popup.js を読み込んでいます。
+-->
 <!DOCTYPE html>
 <html lang="ja">
 <head>
   <meta charset="UTF-8">
+  <!-- モバイル端末などでの表示崩れを防ぐためのviewport設定 -->
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>セーフ・オートクリーナー</title>
+  <!-- Google Fonts から洗練されたモダンなフォント「Inter」を読み込み -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <!-- ポップアップ専用のCSSファイルを接続 -->
   <link rel="stylesheet" href="popup.css">
 </head>
 <body>
+  <!-- アプリ全体のレイアウトを包むメインコンテナ -->
   <div class="app-container">
-    <!-- ヘッダー -->
+    
+    <!-- ヘッダーエリア：ロゴ画像（SVG）と拡張機能のタイトルを配置 -->
     <header class="app-header">
       <div class="logo-area">
+        <!-- ほうき・クリーンアップを想起させる時計モチーフのカスタムSVGロゴ -->
         <svg class="logo-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <!-- 円のアイコン枠 -->
           <path d="M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          <!-- 時計の針 -->
           <path d="M12 6V12L16 14" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
         </svg>
+        <!-- タイトルとサブタイトルのテキスト表示エリア -->
         <div class="logo-text">
           <h1>セーフ・オートクリーナー</h1>
           <p class="subtitle">安全なブラウザ自動クリーンアップ</p>
@@ -25,27 +42,33 @@
       </div>
     </header>
 
-    <!-- メインコンテンツ -->
+    <!-- メインコンテンツエリア：設定スイッチや操作ボタンを配置 -->
     <main class="app-main">
-      <!-- メイン有効化トグル -->
+      
+      <!-- メイン有効化トグルカード：拡張機能の全自動削除機能を一括でON/OFF -->
       <section class="card main-switch-card">
         <div class="setting-details">
           <span class="setting-name main-switch-name">自動クリーンアップ</span>
           <span class="setting-desc">機能を有効にすると、設定通りに自動削除が実行されます</span>
         </div>
+        <!-- トグルスイッチのカスタムデザイン用構造 -->
         <label class="switch main-switch">
+          <!-- checkbox要素のIDは popup.js から参照されて値を監視・保存します -->
           <input type="checkbox" id="extension-enabled">
           <span class="slider"></span>
         </label>
       </section>
 
-      <!-- ステータスカード -->
+      <!-- ステータスカード：最後の削除日時表示と、手動実行ボタン -->
       <section class="card status-card">
         <div class="status-info">
           <span class="status-label">前回のクリーンアップ</span>
+          <!-- 最終実行日時の挿入先テキスト -->
           <span id="last-cleaned-time" class="status-value">未実行</span>
         </div>
+        <!-- 今すぐ手動で削除を実行するボタン。実行中はloadingアニメーションになります -->
         <button id="clean-now-btn" class="btn btn-primary">
+          <!-- 矢印が回転するシンボルSVG -->
           <svg class="btn-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
             <path d="M19 12C19 15.866 15.866 19 12 19C8.13401 19 5 15.866 5 12C5 8.13401 8.13401 5 12 5C14.8522 5 17.2923 6.70296 18.3612 9.14286" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
             <path d="M19 9H14V4" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
@@ -54,10 +77,11 @@
         </button>
       </section>
 
-      <!-- 削除対象設定 -->
+      <!-- 削除対象設定カード：どのデータを削除するかを個別にON/OFF -->
       <section class="card settings-card">
         <h2 class="card-title">削除対象データ</h2>
         
+        <!-- 設定項目 1: 閲覧履歴 -->
         <div class="setting-item">
           <div class="setting-details">
             <span class="setting-name">閲覧履歴</span>
@@ -69,6 +93,7 @@
           </label>
         </div>
 
+        <!-- 設定項目 2: 入力フォームデータ -->
         <div class="setting-item">
           <div class="setting-details">
             <span class="setting-name">入力フォームデータ</span>
@@ -80,6 +105,7 @@
           </label>
         </div>
 
+        <!-- 設定項目 3: ダウンロード履歴 -->
         <div class="setting-item">
           <div class="setting-details">
             <span class="setting-name">ダウンロード履歴</span>
@@ -91,6 +117,7 @@
           </label>
         </div>
 
+        <!-- 設定項目 4: キャッシュデータ -->
         <div class="setting-item">
           <div class="setting-details">
             <span class="setting-name">キャッシュデータ</span>
@@ -103,10 +130,11 @@
         </div>
       </section>
 
-      <!-- 自動化設定 -->
+      <!-- 自動化設定カード：削除を自動で実行するトリガー（タイミング）の設定 -->
       <section class="card settings-card">
         <h2 class="card-title">自動削除の実行タイミング</h2>
 
+        <!-- タイミング 1: ブラウザ起動時 -->
         <div class="setting-item">
           <div class="setting-details">
             <span class="setting-name">ブラウザ起動時に実行</span>
@@ -118,6 +146,7 @@
           </label>
         </div>
 
+        <!-- タイミング 2: ブラウザ終了時（全閉じ時） -->
         <div class="setting-item">
           <div class="setting-details">
             <span class="setting-name">ブラウザ終了時に実行</span>
@@ -129,6 +158,7 @@
           </label>
         </div>
 
+        <!-- タイミング 3: バックグラウンドでの定期実行 -->
         <div class="setting-item">
           <div class="setting-details">
             <span class="setting-name">定期的に自動で実行</span>
@@ -140,10 +170,12 @@
           </label>
         </div>
 
+        <!-- 定期実行の間隔時間を選択するセレクトボックス（定期実行ONのときのみ操作可能） -->
         <div class="setting-item sub-setting" id="interval-container">
           <div class="setting-details">
             <span class="setting-name">実行間隔</span>
           </div>
+          <!-- カスタムセレクト矢印用のラッパー -->
           <div class="select-wrapper">
             <select id="clean-interval">
               <option value="1">1時間ごと</option>
@@ -157,19 +189,25 @@
       </section>
     </main>
 
-    <!-- フッター（安全表示） -->
+    <!-- フッターエリア：クッキーやパスワードが安全に保護されていることを表示するバッジ -->
     <footer class="app-footer">
       <div class="security-badge">
+        <!-- 安全・盾をイメージしたシールドアイコンSVG -->
         <svg class="badge-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <!-- 盾の背景面 -->
           <path d="M12 22C12 22 20 18 20 12V5L12 2L4 5V12C4 18 12 22 12 22Z" fill="currentColor" opacity="0.15"/>
+          <!-- 盾の外枠線 -->
           <path d="M12 22C12 22 20 18 20 12V5L12 2L4 5V12C4 18 12 22 12 22Z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
+          <!-- チェックマーク -->
           <path d="M9 11L11 13L15 9" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
         </svg>
+        <!-- ユーザーの誤消去への安心感を与えるテキスト -->
         <span class="badge-text">パスワードやクッキー等の重要情報は削除されません</span>
       </div>
     </footer>
   </div>
 
+  <!-- ポップアップの動作ロジック（UI制御と設定保存）を行うJSファイルを読み込み -->
   <script src="popup.js"></script>
 </body>
 </html>

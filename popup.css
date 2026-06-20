@@ -1,128 +1,147 @@
-/* セーフ・オートクリーナー スタイル定義 */
+/**
+ * @file popup.css
+ * @description ポップアップ画面のスタイリング（ビジュアルデザイン）を定義します。
+ * 暗めの背景（ダークテーマ）に、鮮やかなブルーから紫のネオン調グラデーションを効かせ、
+ * ガラスが浮き上がっているような「ガラスモーフィズム (Glassmorphism)」効果を適用しています。
+ * トグルスイッチのアニメーションや、無効時のグレーアウト(.disabled-state)のアニメーションも
+ * 細かく定義されています。
+ */
 
+/* デザインシステム共通のスタイル定数（カスタムプロパティ）の定義 */
 :root {
-  --bg-primary: #0a0e17;
-  --bg-gradient: linear-gradient(135deg, #0d1527 0%, #070a12 100%);
-  --card-bg: rgba(22, 33, 54, 0.6);
-  --card-border: rgba(255, 255, 255, 0.08);
-  --text-main: #f0f6fc;
-  --text-muted: #8b98a9;
+  --bg-primary: #0a0e17;                                   /* 全体のベース背景色 */
+  --bg-gradient: linear-gradient(135deg, #0d1527 0%, #070a12 100%); /* 斜めの深みのあるグラデーション背景 */
+  --card-bg: rgba(22, 33, 54, 0.6);                        /* カードの半透明背景（ガラス効果用） */
+  --card-border: rgba(255, 255, 255, 0.08);                /* カードの極細白枠線（ガラスエッジ用） */
+  --text-main: #f0f6fc;                                    /* メインテキスト色（ほぼ白） */
+  --text-muted: #8b98a9;                                   /* サブテキスト・説明文色（暗いグレー青） */
   
-  --primary-color: #00d2ff;
-  --primary-hover: #33ddff;
-  --accent-color: #4f46e5;
-  --accent-gradient: linear-gradient(135deg, #00d2ff 0%, #4f46e5 100%);
+  --primary-color: #00d2ff;                                /* スカイブルー（プライマリカラー） */
+  --primary-hover: #33ddff;                                /* ホバー時の明るいスカイブルー */
+  --accent-color: #4f46e5;                                 /* インディゴブルー（アクセントカラー） */
+  --accent-gradient: linear-gradient(135deg, #00d2ff 0%, #4f46e5 100%); /* ボタンやロゴ用の輝くグラデーション */
   
-  --success-color: #10b981;
-  --warning-color: #f59e0b;
-  --danger-color: #ef4444;
+  --success-color: #10b981;                                /* 成功・完了時のグリーン */
+  --warning-color: #f59e0b;                                /* 警告時のイエロー */
+  --danger-color: #ef4444;                                 /* エラー時のレッド */
   
-  --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  --shadow-premium: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+  --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); /* トランジション（滑らかなアニメーション）のイージング */
+  --shadow-premium: 0 8px 32px 0 rgba(0, 0, 0, 0.37);     /* 浮遊感を出すための大きめの影 */
 }
 
+/* 全要素の初期化（ボックスサイズ計算の統一、余白の初期化） */
 * {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
+  box-sizing: border-box; /* paddingやborderを幅・高さの内側に含めて計算する設定 */
+  margin: 0;              /* ブラウザデフォルトの外側余白をゼロに */
+  padding: 0;             /* ブラウザデフォルトの内側余白をゼロに */
 }
 
+/* ポップアップウィンドウの基本設定 */
 body {
-  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-  background: var(--bg-primary);
-  color: var(--text-main);
-  width: 360px;
-  overflow-x: hidden;
-  line-height: 1.5;
-  font-size: 14px;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif; /* 美しい欧文フォントとシステムフォントの優先指定 */
+  background: var(--bg-primary); /* ベスト背景色を設定 */
+  color: var(--text-main);       /* メインテキストカラーを設定 */
+  width: 360px;                  /* Chrome拡張機能として最適な固定幅 */
+  overflow-x: hidden;            /* 横スクロールバーの発生を防止 */
+  line-height: 1.5;              /* 読みやすい行間幅（フォントサイズの1.5倍） */
+  font-size: 14px;               /* ベースの文字サイズ */
 }
 
+/* ポップアップ全体を覆うコンテナ。flexで縦並びレイアウトを制御 */
 .app-container {
-  background: var(--bg-gradient);
-  min-height: 480px;
-  padding: 20px;
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
+  background: var(--bg-gradient); /* グラデーション背景を適用 */
+  min-height: 480px;              /* 最低限の縦幅 */
+  padding: 20px;                  /* 内側の余白 */
+  display: flex;                  /* フレックスボックスモデルを使用 */
+  flex-direction: column;         /* 子要素を上から下へ縦並びにする */
+  gap: 16px;                      /* 子要素同士の間隔を16pxに統一 */
 }
 
-/* ヘッダー */
+/* ヘッダーセクション */
 .app-header {
-  margin-bottom: 4px;
+  margin-bottom: 4px; /* 下部との微細な余白 */
 }
 
+/* ロゴとテキストの横並び配置 */
 .logo-area {
-  display: flex;
-  align-items: center;
-  gap: 12px;
+  display: flex;       /* 横並びにする */
+  align-items: center; /* 縦方向の中央で揃える */
+  gap: 12px;           /* アイコンとテキストの間隔 */
 }
 
+/* SVGロゴアイコンのスタイル */
 .logo-icon {
   width: 32px;
   height: 32px;
-  color: var(--primary-color);
-  filter: drop-shadow(0 0 8px rgba(0, 210, 255, 0.4));
+  color: var(--primary-color); /* スカイブルーを適用 */
+  filter: drop-shadow(0 0 8px rgba(0, 210, 255, 0.4)); /* ロゴの背後にネオン風の発光効果を与える */
 }
 
+/* 拡張機能のタイトル表示（グラデーションテキスト） */
 .logo-text h1 {
   font-size: 16px;
   font-weight: 700;
-  letter-spacing: -0.02em;
-  background: var(--accent-gradient);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
+  letter-spacing: -0.02em;       /* 文字同士の間隔をわずかに狭めて引き締める */
+  background: var(--accent-gradient); /* グラデーションを背景に指定 */
+  -webkit-background-clip: text; /* 背景を文字の形に切り抜く */
+  -webkit-text-fill-color: transparent; /* 文字の塗りつぶしを透明にしてグラデーションを露出させる */
 }
 
+/* サブタイトルのスタイル */
 .logo-text .subtitle {
   font-size: 11px;
-  color: var(--text-muted);
+  color: var(--text-muted); /* 少しトーンを落とした色 */
   font-weight: 500;
 }
 
-/* カード共通 */
+/* 各設定ブロックを囲む「カード」の共通デザイン（ガラスモーフィズム） */
 .card {
-  background: var(--card-bg);
-  border: 1px solid var(--card-border);
-  border-radius: 16px;
-  padding: 16px;
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  box-shadow: var(--shadow-premium);
-  display: flex;
+  background: var(--card-bg);                 /* 半透明の濃紺 */
+  border: 1px solid var(--card-border);       /* 薄い白のボーダー */
+  border-radius: 16px;                        /* 角丸デザイン */
+  padding: 16px;                              /* カード内側の余白 */
+  backdrop-filter: blur(12px);                /* 背後をぼかす（ガラス効果の肝） */
+  -webkit-backdrop-filter: blur(12px);        /* Safari対応の接頭辞 */
+  box-shadow: var(--shadow-premium);          /* 浮き上がりを演出するソフトな影 */
+  display: flex;                              /* 縦並び用にフレックスを使用 */
   flex-direction: column;
-  gap: 14px;
-  transition: var(--transition-smooth);
+  gap: 14px;                                  /* カード内の項目同士の縦間隔 */
+  transition: var(--transition-smooth);       /* ボーダー色のホバーアニメーション用 */
 }
 
+/* カードをホバー（マウスオーバー）したときのスタイル */
 .card:hover {
-  border-color: rgba(255, 255, 255, 0.12);
+  border-color: rgba(255, 255, 255, 0.12); /* ボーダーラインを少し明るくして立体感を出す */
 }
 
+/* 各カードのセクション見出しタイトル */
 .card-title {
   font-size: 12px;
   font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
+  text-transform: uppercase;              /* 大文字に変換（アルファベット用） */
+  letter-spacing: 0.05em;                 /* 文字間隔を広げて見出しらしく */
   color: var(--text-muted);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-  padding-bottom: 8px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05); /* 見出し下の極細境界線 */
+  padding-bottom: 8px;                    /* 境界線と文字との間隔 */
 }
 
-/* ステータスカード */
+/* ステータスカード専用の個別スタイル（横並びで表示） */
 .status-card {
-  flex-direction: row;
-  justify-content: space-between;
-  align-items: center;
-  background: linear-gradient(135deg, rgba(22, 33, 54, 0.8) 0%, rgba(10, 15, 28, 0.8) 100%);
+  flex-direction: row;            /* 縦並びではなく横並びに */
+  justify-content: space-between; /* 両端に寄せて配置 */
+  align-items: center;            /* 縦方向中央で揃える */
+  background: linear-gradient(135deg, rgba(22, 33, 54, 0.8) 0%, rgba(10, 15, 28, 0.8) 100%); /* より暗い特別グラデーション */
   padding: 14px 18px;
 }
 
+/* ステータスの文言エリア */
 .status-info {
   display: flex;
   flex-direction: column;
   gap: 2px;
 }
 
+/* 「前回のクリーンアップ」ラベル */
 .status-label {
   font-size: 10px;
   font-weight: 600;
@@ -131,105 +150,117 @@ body {
   letter-spacing: 0.03em;
 }
 
+/* 日時テキストのフォント設定 */
 .status-value {
   font-size: 13px;
   font-weight: 600;
   color: var(--text-main);
-  font-variant-numeric: tabular-nums;
+  font-variant-numeric: tabular-nums; /* 等幅の数字フォントを使用し、時間が変わってもガタつかないようにする */
 }
 
-/* ボタン */
+/* 押しボタンの共通スタイル */
 .btn {
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 8px;
+  gap: 8px;                            /* アイコンとテキストの間隔 */
   border: none;
-  border-radius: 10px;
+  border-radius: 10px;                 /* 滑らかな角丸 */
   padding: 10px 16px;
   font-size: 13px;
   font-weight: 600;
-  cursor: pointer;
-  transition: var(--transition-smooth);
+  cursor: pointer;                     /* ホバー時に指差しカーソルにする */
+  transition: var(--transition-smooth); /* アニメーションの有効化 */
 }
 
+/* 「今すぐ実行」用の青紫グラデーションボタン */
 .btn-primary {
   background: var(--accent-gradient);
   color: #fff;
-  box-shadow: 0 4px 12px rgba(79, 70, 229, 0.3);
+  box-shadow: 0 4px 12px rgba(79, 70, 229, 0.3); /* ボタンの発光エフェクト */
 }
 
+/* ボタンホバー時 */
 .btn-primary:hover {
-  transform: translateY(-1px);
-  box-shadow: 0 6px 16px rgba(0, 210, 255, 0.4);
+  transform: translateY(-1px);                  /* わずかに上に持ち上げる */
+  box-shadow: 0 6px 16px rgba(0, 210, 255, 0.4); /* 影を広げて光を強くする */
 }
 
+/* ボタン押下（アクティブ）時 */
 .btn-primary:active {
-  transform: translateY(0);
+  transform: translateY(0);                     /* 元の位置に戻す（押し込み感） */
 }
 
+/* ボタン内アイコン */
 .btn-icon {
   width: 16px;
   height: 16px;
-  transition: transform 0.5s ease;
+  transition: transform 0.5s ease;             /* 回転アニメーションの速度指定 */
 }
 
-/* ボタンが回転するアニメーション（実行中） */
+/* クリーンアップ処理実行中のボタン内アイコン回転用クラス（JavaScriptで動的に追加されます） */
 .btn.loading .btn-icon {
-  animation: spin 1s linear infinite;
+  animation: spin 1s linear infinite; /* 1秒間で1周する無限ループアニメーション */
 }
 
+/* クリーンアップが成功したときの緑ボタン用クラス（JavaScriptで動的に追加されます） */
 .btn.success {
   background: var(--success-color);
   box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
 }
 
+/* アイコン回転アニメーションのフレーム定義 */
 @keyframes spin {
   from { transform: rotate(0deg); }
   to { transform: rotate(360deg); }
 }
 
-/* 設定項目 */
+/* 設定の各項目行（トグルや見出しを配置する1行） */
 .setting-item {
   display: flex;
-  justify-content: space-between;
+  justify-content: space-between; /* テキストとスイッチを両端に寄せる */
   align-items: center;
   gap: 12px;
   transition: var(--transition-smooth);
 }
 
+/* 設定名と説明文の縦並び */
 .setting-details {
   display: flex;
   flex-direction: column;
   gap: 2px;
 }
 
+/* 項目タイトル（例：閲覧履歴） */
 .setting-name {
   font-size: 13px;
   font-weight: 600;
   color: var(--text-main);
 }
 
+/* 項目の詳細説明（例：訪問したウェブサイトの履歴） */
 .setting-desc {
   font-size: 11px;
   color: var(--text-muted);
 }
 
-/* トグルスイッチ */
+/* iOSスタイルの滑らかなトグルスイッチの外枠 */
 .switch {
   position: relative;
   display: inline-block;
-  width: 42px;
-  height: 24px;
-  flex-shrink: 0;
+  width: 42px; /* 横幅 */
+  height: 24px; /* 縦幅 */
+  flex-shrink: 0; /* flexコンテナ内で縮小されるのを防ぐ */
 }
 
+/* 本物のチェックボックスは非表示にし、代わりにデザインしたスライダーを表示する */
 .switch input {
   opacity: 0;
   width: 0;
   height: 0;
 }
 
+/* トグルスイッチの背景レール（未選択状態） */
 .slider {
   position: absolute;
   cursor: pointer;
@@ -237,62 +268,68 @@ body {
   left: 0;
   right: 0;
   bottom: 0;
-  background-color: rgba(255, 255, 255, 0.1);
+  background-color: rgba(255, 255, 255, 0.1);          /* 半透明の薄いグレー */
   border: 1px solid rgba(255, 255, 255, 0.05);
-  transition: .3s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: .3s cubic-bezier(0.4, 0, 0.2, 1);         /* 滑らかなトグル背景アニメーション */
   border-radius: 24px;
 }
 
+/* トグルスイッチの丸いノブ（動く部分） */
 .slider:before {
   position: absolute;
   content: "";
-  height: 18px;
+  height: 18px; /* 丸の直径 */
   width: 18px;
-  left: 2px;
+  left: 2px;    /* 未選択時の左側余白 */
   bottom: 2px;
   background-color: #fff;
-  transition: .3s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: .3s cubic-bezier(0.4, 0, 0.2, 1);         /* ノブがスライドするアニメーション */
   border-radius: 50%;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+  box-shadow: 0 2px 4px rgba(0,0,0,0.2);               /* ノブ単体への細かなシャドウ */
 }
 
+/* チェックボックスがON（選択状態）のときのトグルスイッチ背景 */
 input:checked + .slider {
-  background: var(--accent-gradient);
+  background: var(--accent-gradient); /* 青紫グラデーションに変更 */
 }
 
+/* キーボード等でのフォーカス時の細かなアウトライン効果 */
 input:focus + .slider {
   box-shadow: 0 0 1px var(--primary-color);
 }
 
+/* チェックボックスがON（選択状態）のときのノブの位置（右側へスライド） */
 input:checked + .slider:before {
-  transform: translateX(18px);
+  transform: translateX(18px); /* 18px分、右へ平行移動 */
 }
 
-/* サブ設定項目（インデント等） */
+/* サブ設定項目（定期実行時の「実行間隔」設定用の字下げレイアウト） */
 .sub-setting {
   margin-top: -4px;
   padding-left: 12px;
-  border-left: 2px solid rgba(0, 210, 255, 0.2);
+  border-left: 2px solid rgba(0, 210, 255, 0.2); /* スカイブルーの縦細ラインで紐付けを示す */
   transition: var(--transition-smooth);
 }
 
+/* 定期実行がOFFの場合に非アクティブにするための設定 */
 .sub-setting.disabled {
   opacity: 0.4;
-  pointer-events: none;
+  pointer-events: none; /* マウスイベント（クリックなど）を一切無視する */
 }
 
-/* セレクトボックス */
+/* セレクトボックスのカスタムラッパー（矢印マークの描画用） */
 .select-wrapper {
   position: relative;
 }
 
+/* セレクトボックス（ドロップダウン）本体のカスタマイズ */
 select {
-  appearance: none;
-  -webkit-appearance: none;
+  appearance: none;         /* ブラウザ標準のドロップダウン矢印を消去 */
+  -webkit-appearance: none; /* Safari対応の矢印消去 */
   background: rgba(0, 0, 0, 0.2);
   border: 1px solid rgba(255, 255, 255, 0.1);
   border-radius: 8px;
-  padding: 6px 30px 6px 12px;
+  padding: 6px 30px 6px 12px; /* 右側に矢印を置くための大きめの余白(30px)を確保 */
   color: var(--text-main);
   font-size: 12px;
   font-weight: 500;
@@ -301,80 +338,88 @@ select {
   outline: none;
 }
 
+/* セレクトボックスホバー時 */
 select:hover {
   border-color: rgba(255, 255, 255, 0.2);
 }
 
+/* セレクトボックス選択フォーカス時 */
 select:focus {
   border-color: var(--primary-color);
-  box-shadow: 0 0 8px rgba(0, 210, 255, 0.2);
+  box-shadow: 0 0 8px rgba(0, 210, 255, 0.2); /* フォーカス時に青く発光させる */
 }
 
+/* CSSによるカスタム下向き三角形矢印の描画（セレクトボックスの右側） */
 .select-wrapper::after {
   content: "";
   position: absolute;
   right: 10px;
   top: 50%;
   transform: translateY(-50%);
-  border-top: 5px solid var(--text-muted);
+  border-top: 5px solid var(--text-muted);     /* 三角形の下向き頂点を作るボーダーテクニック */
   border-left: 4px solid transparent;
   border-right: 4px solid transparent;
-  pointer-events: none;
+  pointer-events: none;                       /* 矢印部分をクリックしてもセレクトボックスが開くように入力を透過 */
 }
 
-/* フッター */
+/* フッターセクション */
 .app-footer {
-  margin-top: auto;
+  margin-top: auto;   /* flexレイアウトにより、常に画面の最下部に張り付くようにする */
   padding-top: 8px;
 }
 
+/* 安全・クッキー保護表示用のグリーンバッジ */
 .security-badge {
   display: flex;
   align-items: center;
   gap: 8px;
-  background: rgba(16, 185, 129, 0.08);
-  border: 1px solid rgba(16, 185, 129, 0.15);
+  background: rgba(16, 185, 129, 0.08);       /* 薄い半透明グリーン背景 */
+  border: 1px solid rgba(16, 185, 129, 0.15); /* グリーンの極細枠 */
   border-radius: 12px;
   padding: 10px 12px;
-  color: #34d399;
+  color: #34d399;                              /* 柔らかい印象の明るいグリーン文字 */
 }
 
+/* 盾アイコンの縮小防止設定 */
 .badge-icon {
   width: 18px;
   height: 18px;
   flex-shrink: 0;
 }
 
+/* バッジのテキスト */
 .badge-text {
   font-size: 10px;
   font-weight: 600;
   line-height: 1.3;
 }
 
-/* メインスイッチカード */
+/* メイン有効/無効トグルカード専用の特別グラデーションスタイル */
 .main-switch-card {
-  background: linear-gradient(135deg, rgba(79, 70, 229, 0.2) 0%, rgba(22, 33, 54, 0.8) 100%);
-  border-color: rgba(79, 70, 229, 0.4);
-  flex-direction: row;
+  background: linear-gradient(135deg, rgba(79, 70, 229, 0.2) 0%, rgba(22, 33, 54, 0.8) 100%); /* インディゴをブレンドした高級感ある背景 */
+  border-color: rgba(79, 70, 229, 0.4);                                                       /* インディゴ境界線 */
+  flex-direction: row;                                                                        /* 横並び */
   justify-content: space-between;
   align-items: center;
   padding: 16px 18px;
 }
 
+/* メイン機能名の見出しテキスト */
 .main-switch-name {
   font-size: 14px;
   font-weight: 700;
   color: var(--text-main);
 }
 
+/* メインスイッチ専用のスライダーボーダー */
 .main-switch-card .slider {
   border-color: rgba(79, 70, 229, 0.3);
 }
 
-/* 無効状態のスタイリング（メインスイッチ以外全体を非アクティブ化） */
+/* 拡張機能全体が無効状態(OFF)の時のグレーアウト用表示エフェクト（JavaScriptで動的にON/OFFされます） */
 .disabled-state {
-  opacity: 0.35;
-  pointer-events: none;
-  filter: grayscale(40%);
-  transition: var(--transition-smooth);
+  opacity: 0.35;                        /* 透過させて非活性であることを明示 */
+  pointer-events: none;                 /* マウス操作・タップ操作を一切無効化 */
+  filter: grayscale(40%);               /* 色味を40%落としてモノクロ化し、動作していない感を演出 */
+  transition: var(--transition-smooth); /* 有効・無効切り替え時の滑らかなフェード効果 */
 }
