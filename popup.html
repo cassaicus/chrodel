@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>セーフ・オートクリーナー</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="popup.css">
+</head>
+<body>
+  <div class="app-container">
+    <!-- ヘッダー -->
+    <header class="app-header">
+      <div class="logo-area">
+        <svg class="logo-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          <path d="M12 6V12L16 14" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        <div class="logo-text">
+          <h1>セーフ・オートクリーナー</h1>
+          <p class="subtitle">安全なブラウザ自動クリーンアップ</p>
+        </div>
+      </div>
+    </header>
+
+    <!-- メインコンテンツ -->
+    <main class="app-main">
+      <!-- メイン有効化トグル -->
+      <section class="card main-switch-card">
+        <div class="setting-details">
+          <span class="setting-name main-switch-name">自動クリーンアップ</span>
+          <span class="setting-desc">機能を有効にすると、設定通りに自動削除が実行されます</span>
+        </div>
+        <label class="switch main-switch">
+          <input type="checkbox" id="extension-enabled">
+          <span class="slider"></span>
+        </label>
+      </section>
+
+      <!-- ステータスカード -->
+      <section class="card status-card">
+        <div class="status-info">
+          <span class="status-label">前回のクリーンアップ</span>
+          <span id="last-cleaned-time" class="status-value">未実行</span>
+        </div>
+        <button id="clean-now-btn" class="btn btn-primary">
+          <svg class="btn-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M19 12C19 15.866 15.866 19 12 19C8.13401 19 5 15.866 5 12C5 8.13401 8.13401 5 12 5C14.8522 5 17.2923 6.70296 18.3612 9.14286" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M19 9H14V4" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          <span class="btn-text">今すぐ実行</span>
+        </button>
+      </section>
+
+      <!-- 削除対象設定 -->
+      <section class="card settings-card">
+        <h2 class="card-title">削除対象データ</h2>
+        
+        <div class="setting-item">
+          <div class="setting-details">
+            <span class="setting-name">閲覧履歴</span>
+            <span class="setting-desc">訪問したウェブサイトの履歴</span>
+          </div>
+          <label class="switch">
+            <input type="checkbox" id="target-history">
+            <span class="slider"></span>
+          </label>
+        </div>
+
+        <div class="setting-item">
+          <div class="setting-details">
+            <span class="setting-name">入力フォームデータ</span>
+            <span class="setting-desc">検索窓やフォームの自動入力履歴</span>
+          </div>
+          <label class="switch">
+            <input type="checkbox" id="target-formdata">
+            <span class="slider"></span>
+          </label>
+        </div>
+
+        <div class="setting-item">
+          <div class="setting-details">
+            <span class="setting-name">ダウンロード履歴</span>
+            <span class="setting-desc">ダウンロードしたファイルのリスト</span>
+          </div>
+          <label class="switch">
+            <input type="checkbox" id="target-downloads">
+            <span class="slider"></span>
+          </label>
+        </div>
+
+        <div class="setting-item">
+          <div class="setting-details">
+            <span class="setting-name">キャッシュデータ</span>
+            <span class="setting-desc">画像やウェブページの一時保存ファイル</span>
+          </div>
+          <label class="switch">
+            <input type="checkbox" id="target-cache">
+            <span class="slider"></span>
+          </label>
+        </div>
+      </section>
+
+      <!-- 自動化設定 -->
+      <section class="card settings-card">
+        <h2 class="card-title">自動削除の実行タイミング</h2>
+
+        <div class="setting-item">
+          <div class="setting-details">
+            <span class="setting-name">ブラウザ起動時に実行</span>
+            <span class="setting-desc">Chromeを起動したときに自動で削除</span>
+          </div>
+          <label class="switch">
+            <input type="checkbox" id="clean-on-startup">
+            <span class="slider"></span>
+          </label>
+        </div>
+
+        <div class="setting-item">
+          <div class="setting-details">
+            <span class="setting-name">ブラウザ終了時に実行</span>
+            <span class="setting-desc">ウィンドウをすべて閉じたときに削除</span>
+          </div>
+          <label class="switch">
+            <input type="checkbox" id="clean-on-exit">
+            <span class="slider"></span>
+          </label>
+        </div>
+
+        <div class="setting-item">
+          <div class="setting-details">
+            <span class="setting-name">定期的に自動で実行</span>
+            <span class="setting-desc">バックグラウンドで一定時間ごとに削除</span>
+          </div>
+          <label class="switch">
+            <input type="checkbox" id="clean-periodically">
+            <span class="slider"></span>
+          </label>
+        </div>
+
+        <div class="setting-item sub-setting" id="interval-container">
+          <div class="setting-details">
+            <span class="setting-name">実行間隔</span>
+          </div>
+          <div class="select-wrapper">
+            <select id="clean-interval">
+              <option value="1">1時間ごと</option>
+              <option value="4">4時間ごと</option>
+              <option value="12">12時間ごと</option>
+              <option value="24">24時間ごと</option>
+              <option value="48">48時間ごと</option>
+            </select>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <!-- フッター（安全表示） -->
+    <footer class="app-footer">
+      <div class="security-badge">
+        <svg class="badge-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M12 22C12 22 20 18 20 12V5L12 2L4 5V12C4 18 12 22 12 22Z" fill="currentColor" opacity="0.15"/>
+          <path d="M12 22C12 22 20 18 20 12V5L12 2L4 5V12C4 18 12 22 12 22Z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
+          <path d="M9 11L11 13L15 9" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        <span class="badge-text">パスワードやクッキー等の重要情報は削除されません</span>
+      </div>
+    </footer>
+  </div>
+
+  <script src="popup.js"></script>
+</body>
+</html>
